@@ -20,7 +20,7 @@ function App() {
       axios.get(usersUrl)
         .then(res => {
           setUsers(res.data.results);
-          setNumUsers(''); // Vaciar el input después de obtener los resultados
+          setNumUsers('');
         })
         .catch(err => console.log(err));
     }
@@ -28,17 +28,18 @@ function App() {
 
   return (
     <div className="container">
-      <h1>Despliegue dinámico con método map</h1>
-      <label htmlFor="numUsers">Cantidad de usuarios:</label>
-      <input
-        id="numUsers"
-        type="number"
-        value={numUsers}
-        onChange={handleNumUsersChange}
-        min="1"
-        max="100"
-      />
-      <button onClick={handleSearchClick}>Buscar</button>
+      <h1>Despliegue dinámico con método map:</h1>
+      <div className="input-container">
+        <input
+          id="numUsers"
+          type="number"
+          value={numUsers}
+          onChange={handleNumUsersChange}
+          min="1"
+          max="100"
+        />
+        <button onClick={handleSearchClick}>Buscar</button>
+      </div>
       {
         users.length > 0 ? (
           <div className="user-list">
