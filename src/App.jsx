@@ -50,7 +50,7 @@ function App() {
             }
           </div>
         ) : (
-          <p>{numUsers !== '' ? 'Cargando datos...' : 'Ingrese la cantidad de usuarios y haga clic en Buscar'}</p>
+          <p>{numUsers !== '' ? 'Cargando datos...' : 'Ingrese la cantidad de usuarios:'}</p>
         )
       }
     </div>
