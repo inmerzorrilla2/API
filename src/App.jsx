@@ -1,21 +1,30 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import axios from 'axios';
 import UserCard from './components/UserCard';
 
 function App() {
   const [users, setUsers] = useState([]);
-  const [numUsers, setNumUsers] = useState(5); // Estado para la cantidad de usuarios
+  const [numUsers, setNumUsers] = useState(''); // Estado para la cantidad de usuarios
 
   const usersUrl = `https://randomuser.me/api/?results=${numUsers}`; // URL dinámica
 
-  useEffect(() => {
-    axios.get(usersUrl)
-      .then(res => setUsers(res.data.results))
-      .catch(err => console.log(err));
-  }, [numUsers]); // Vuelve a ejecutar cuando numUsers cambia
+  const handleNumUsersChange = (e) => {
+    e.preventDefault();
+    const value = e.target.value.trim().toLowerCase(); // Aplicar trim() y toLowerCase()
+    setNumUsers(value);
+  };
 
-  console.log(users);
+  const handleSearchClick = () => {
+    if (numUsers !== '') {
+      axios.get(usersUrl)
+        .then(res => {
+          setUsers(res.data.results);
+          setNumUsers(''); // Vaciar el input después de obtener los resultados
+        })
+        .catch(err => console.log(err));
+    }
+  };
 
   return (
     <div className="container">
@@ -25,10 +34,11 @@ function App() {
         id="numUsers"
         type="number"
         value={numUsers}
-        onChange={(e) => setNumUsers(e.target.value)}
+        onChange={handleNumUsersChange}
         min="1"
         max="100"
       />
+      <button onClick={handleSearchClick}>Buscar</button>
       {
         users.length > 0 ? (
           <div className="user-list">
@@ -39,11 +49,12 @@ function App() {
             }
           </div>
         ) : (
-          <p>Cargando datos...</p>
+          <p>{numUsers !== '' ? 'Cargando datos...' : 'Ingrese la cantidad de usuarios y haga clic en Buscar'}</p>
         )
       }
     </div>
   );
-} 
+}
 
 export default App;
+
